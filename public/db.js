@@ -1,36 +1,56 @@
+// check for indexedDB browser support
+
 let db;
-const request = indexedDB.open("budget", 1);
+// create a new db request for a "budget" database.
 
 request.onupgradeneeded = function(event) {
-  const db = event.target.result;
-  db.createObjectStore("pending", { autoIncrement: true });
+  // create object store called "pending" and set autoIncrement to true
+    const db = event.target.result; 
+
+    // why don't I have to set this to a variable??
+    const pendingStore = db.createObjectStore("pending", {autoIncrement: true });
+
 };
 
 request.onsuccess = function(event) {
-  db = event.target.result;
+  db = target.result;
 
-  console.log("INDEXEDDB")
-  // check if app is online before reading from db
+//   this is checking to see if we are online before reading the db
   if (navigator.onLine) {
     checkDatabase();
   }
 };
 
 request.onerror = function(event) {
-  console.log("Woops! " + event.target.errorCode);
+  // log error here
+  // Generic error handler for all errors targeted
+    console.log("Database Error :" + event.target.errorCode)
 };
 
 function saveRecord(record) {
-  const transaction = db.transaction(["pending"], "readwrite");
-  const store = transaction.objectStore("pending");
+  // create a transaction on the pending db with readwrite access
+  // access your pending object store
+  // add record to your store with add method.
+  
+  const transaction = db.transaction(["pending"], "readwrite"); 
+  const pendingStore = transaction.objectStore("pending");
 
-  store.add(record);
+  pendingStore.add(record);
+
 }
 
 function checkDatabase() {
-  const transaction = db.transaction(["pending"], "readwrite");
-  const store = transaction.objectStore("pending");
-  const getAll = store.getAll();
+  // open a transaction on your pending db
+  // access your pending object store
+  // get all records from store and set to a variable
+
+  const transaction = db.transaction(["pending"], "readwrite"); 
+  const pendingStore = transaction.objectStore("pending");
+
+
+    // gets all objects with a specified parameter or all if none is specified
+  const getAll = pendingStore.getAll();
+
 
   getAll.onsuccess = function() {
     if (getAll.result.length > 0) {
@@ -43,12 +63,16 @@ function checkDatabase() {
         }
       })
       .then(response => response.json())
-        .then(() => {
-          // delete records if successful
-          const transaction = db.transaction(["pending"], "readwrite");
-          const store = transaction.objectStore("pending");
-          store.clear();
-        });
+      .then(() => {
+          // if successful, open a transaction on your pending db
+          // access your pending object store
+          // clear all items in your store
+        const transaction = db.transaction(["pending"], "readwrite");
+        const pendingStore = transaction.objectStore("pending");
+
+        // .clear is for deleting all the current data from the object store 
+        pendingStore.clear();
+      });
     }
   };
 }
