@@ -2,13 +2,14 @@
 
 let db;
 // create a new db request for a "budget" database.
+const request = window.indexedDB.open("budgetTracker", 1);
 
 request.onupgradeneeded = function(event) {
   // create object store called "pending" and set autoIncrement to true
     const db = event.target.result; 
 
-    // why don't I have to set this to a variable??
-    const pendingStore = db.createObjectStore("pending", {autoIncrement: true });
+    // why don't I have to set this to a variable?? Because we have nothing additional to do with it
+    db.createObjectStore("pending", {autoIncrement: true });
 
 };
 
@@ -16,6 +17,7 @@ request.onsuccess = function(event) {
   db = target.result;
 
 //   this is checking to see if we are online before reading the db
+// navigator is available to us through the browser from index script tag 
   if (navigator.onLine) {
     checkDatabase();
   }
@@ -49,14 +51,14 @@ function checkDatabase() {
 
 
     // gets all objects with a specified parameter or all if none is specified
-  const getAll = pendingStore.getAll();
+  const requestGetAll = pendingStore.getAll();
 
 
-  getAll.onsuccess = function() {
-    if (getAll.result.length > 0) {
+  requestGetAll.onsuccess = function() {
+    if (requestGetAll.result.length > 0) {
       fetch("/api/transaction/bulk", {
         method: "POST",
-        body: JSON.stringify(getAll.result),
+        body: JSON.stringify(requestGetAll.result),
         headers: {
           Accept: "application/json, text/plain, */*",
           "Content-Type": "application/json"
