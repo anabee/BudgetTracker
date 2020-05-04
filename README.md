@@ -18,7 +18,9 @@ This project is licensed under MIT
 
 <img src="https://avatars3.githubusercontent.com/u/42880531?v=4" alt="avatar" style="border-radius: 16px" width="30 />
 
-> If you have any questions about the repo, open an issue or contact anabee directly at: [GitHub](https://api.github.com/users/anabee) | [Email](null)
+> If you have any questions about the repo, open an issue or contact anabee directly at: [GitHub](https://api.github.com/users/anabee) | [Email](anav2636@gmail.com)
+
+https://frozen-castle-68675.herokuapp.com/
 
 <img width="815" alt="Screen Shot 2020-05-03 at 9 31 08 PM" src="https://user-images.githubusercontent.com/42880531/80936302-68677980-8d85-11ea-8eaa-4387a3722553.png">
 
